@@ -43,3 +43,7 @@ while opcao != 3:
             print("Alteração feita com sucesso!")
         else:
             print("Chave pix nao encontrada")
+    elif opcao == 3:
+        print("Saindo do sistema")
+    else:
+        print("Opção inválida!")
