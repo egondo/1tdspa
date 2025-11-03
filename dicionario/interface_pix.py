@@ -2,6 +2,9 @@ import streamlit as st
 
 st.subheader("Cadastro de chaves pix")
 
+if not "banco_pix" in st.session_state:
+    st.session_state.banco_pix = []
+
 nome = st.text_input("Nome: ")
 (col1, col2) = st.columns(2) 
 with col1:
@@ -15,4 +18,6 @@ with col2:
 
 if st.button("Cadastra"):
     dado = {"chave": chave, "tipo": tipo, "nome": nome, "banco": banco, "agencia": agencia, "numero": numero}
-    st.write(dado)
+    st.session_state.banco_pix.append(dado)
+
+    st.write(st.session_state.banco_pix)
