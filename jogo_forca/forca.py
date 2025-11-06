@@ -6,7 +6,7 @@ def transforma_palavra(palavra: str, descoberto: list) -> str:
             resposta = resposta + palavra[i] + ' '
         else:
             resposta = resposta + '_ '
-        i = i + 1
+        i = i + 1 #i += 1
     return resposta
 
 
@@ -37,8 +37,7 @@ while erros < 6 and not descobriu_palavra(descoberto):
     print(tracejado)
     print(f"Erros: {erros}")
     letra = input("Letra: ")
-    resultado = busca_letra(palavra, letra, descoberto)
-    if resultado == False:
+    if not busca_letra(palavra, letra, descoberto):
         erros = erros + 1
 
 if erros >= 6:
