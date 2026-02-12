@@ -4,10 +4,10 @@ def cria(tipo: str) -> list:
     retorno = []
     if tipo == 'Normal':
         for valor in range(1, 14):
-            retorno.append([valor, 'C'])
-            retorno.append([valor, 'E'])
-            retorno.append([valor, 'P'])
-            retorno.append([valor, 'O'])
+            retorno.append([valor, '❤️'])
+            retorno.append([valor, '♠️'])   #alt + 3, 4, 5, 6
+            retorno.append([valor, '♣️'])
+            retorno.append([valor, '♦️'])
 
     return retorno
 
