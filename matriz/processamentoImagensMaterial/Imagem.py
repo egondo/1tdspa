@@ -71,7 +71,7 @@ def salvaImagemCinza(nome_imagem, matrizC):
     dados = []
     for i in range(dimensao[1]):
         for j in range(dimensao[0]):
-            dados.append(matrizC[i][j])
+            dados.append((matrizC[i][j]))
             
     im.putdata(dados)
     im.save(nome_imagem)
