@@ -1,0 +1,17 @@
+import json
+
+pacientes = [
+    {"nome": "André Oliveira", "telefone": "(11) 8342-9348", "cpf": "273.742.098-67",
+    "peso": 70, "altura": 167, "sangue": "B-"},
+    {"nome": "Marta Torres", "telefone": "(11) 8342-9348", "cpf": "273.742.098-67",
+    "peso": 60, "altura": 163, "sangue": "O-"},
+    {"nome": "Bianca Nunes", "telefone": "(11) 8342-9348", "cpf": "273.742.098-67",
+    "peso": 62, "altura": 171, "sangue": "AB+"},
+    {"nome": "Carlos Barros", "telefone": "(11) 8342-9348", "cpf": "273.742.098-67",
+    "peso": 82, "altura": 180, "sangue": "A+"}
+]
+
+with open("pacientes.json", mode="w") as file:
+    json.dump(pacientes, file, indent=4)
+
+print("finalizando a gravacao de arquivos json")
