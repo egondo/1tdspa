@@ -1,0 +1,6 @@
+[
+    {"nome": "Eduardo", "cpf": "123", "nascimento": "18/08/2007"},
+    {"nome": "Bianca", "cpf": "456", "nascimento": "7/3/2009"},
+    {"nome": "Arnaldo", "cpf": "789", "nascimento": "27/9/1997"},
+    {"nome": "Geraldo", "cpf": "012", "nascimento": "14/6/2000"}
+]
