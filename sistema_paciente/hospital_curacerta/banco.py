@@ -3,13 +3,40 @@ import oracledb
 def get_conexao():
     return oracledb.connect(user="pf0313", password="professor#23", dsn="oracle.fiap.com.br/orcl")
 
+def rec_id_paciente_senha(senha: int) -> int:
+    sql = "SELECT id_paciente FROM T_PS_VISITA WHERE senha = :senha ORDER BY id_visita DESC"
+    with get_conexao() as conn:
+        with conn.cursor() as cur:
+
+            cur.execute(sql, {"senha": senha})
+            reg = cur.fetchone()
+            if reg == None:
+                raise Exception("Não existe pessoa associada a senha")
+            return reg[0]
+            
+def altera_paciente(paciente: dict):
+    sql = "UPDATE T_PS_PACIENTE SET nome=:nome, cpf=:cpf, convenio=:convenio, telefone=:telefone, nascimento=to_date(:nascimento, 'DD-MM-YYYY') WHERE id_paciente=:id_paciente"
+    with get_conexao() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql, paciente)
+        conn.commit()
+    
+
+
+
+
 #recupera paciente pelo cpf
-def rec_paciente_cpf(cpf: str) -> list:
-    sql = "SELECT id_paciente, nome FROM t_ps_paciente WHERE cpf = :cpf"
+def rec_paciente_cpf(cpf: str) -> dict:
+    sql = "SELECT id_paciente, nome, nascimento FROM t_ps_paciente WHERE cpf = :cpf"
     with get_conexao() as conn:
         with conn.cursor() as cur:
             cur.execute(sql, {"cpf": cpf})
-            return cur.fetchone()
+            registro = cur.fetchone()
+            if registro == None:
+                return None
+            else:
+                pac = {"id_paciente": registro[0], "nome": registro[1], "nascimento": registro[2], "cpf": cpf}
+            return pac
 
 #fazer a consulta da sequence S_PS_SENHA
 def rec_senha() -> int:
@@ -21,14 +48,17 @@ def rec_senha() -> int:
             return resultado[0]
 
 def insere_paciente(paciente: dict):
-    sql = "INSERT INTO t_ps_paciente(nome, telefone, convenio, cpf, nascimento) values(:nome, :telefone, :convenio, :cpf, to_date(':nascimento', 'DD-MM-YYYY'))"
+    sql = "INSERT INTO t_ps_paciente(nome, telefone, convenio, cpf, nascimento) VALUES(:nome, :telefone, :convenio, :cpf, to_date(:nascimento, 'DD-MM-YYYY')) RETURNING ID_PACIENTE INTO :id_paciente"
     with get_conexao() as conn:
         with conn.cursor() as cur:
+            new_id = cur.var(oracledb.NUMBER) #criando obj para armazenar o id
+            paciente['id_paciente'] = new_id
             cur.execute(sql, paciente)
+            paciente['id_paciente'] = new_id.getvalue()[0] #colocando o id gerado pelo banco no dicionario que foi passado como parametro
         conn.commit()
 
 def insere_visita(visita: dict):
-    sql = "INSERT INTO t_ps_visita(id_paciente, chegada) values(:id_paciente, to_date(':chegada', 'DD-MM-YYYY HH24:MI'))"    
+    sql = "INSERT INTO t_ps_visita(id_paciente, chegada, senha) values(:id_paciente, to_date(:chegada, 'DD-MM-YYYY HH24:MI'), :senha)"    
     with get_conexao() as conn:
         with conn.cursor() as cur:
             cur.execute(sql, visita)
