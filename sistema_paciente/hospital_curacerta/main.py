@@ -13,6 +13,18 @@ def menu() -> int:
     opcao = int(input("Selecione: "))
     return opcao
 
+def consulta(): 
+    senha = int(input("Senha: "))
+    id_funcionario = 2
+    consulta = input("diagnostico e encaminhamentos: ")
+    situacao = input("Paciente recebeu alta? (s/n) ")
+    proc = {"descricao": consulta, "id_funcionario": id_funcionario}
+    #TODO fazer esta funcionalida e a alta_paciente
+    negocio.cadastra_procedimento(proc, senha)
+    if situacao == 's':
+        negocio.alta_paciente(senha)
+
+
 def triagem():
     senha = int(input("Senha: "))
     id_funcionario = 1 #Maria de Fatima - enfermeira
