@@ -1,11 +1,22 @@
 import banco
 import util
 
-#paciente: nome, cpf, nascimento, telefone e convenio
 def atualizacao_paciente(senha: int, paciente: dict):
     id_pac = banco.rec_id_paciente_senha(senha)
     paciente['id_paciente'] = id_pac
     banco.altera_paciente(paciente)
+
+def cadastra_triagem(triagem: dict):
+    #recuperar a visita através da senha do paciente
+    #atualiza a visita com as informações da triagem
+    #insiro na tabela t_ps_procedimento a informação que a triagem foi realizada
+    id_visita = banco.rec_id_visita_senha(triagem['senha'])
+    triagem['id_visita'] = id_visita
+    id_func = triagem.pop('id_funcionario')
+    triagem.pop('senha')
+    banco.altera_visita(triagem)
+    proc = {"id_funcionario": id_func, "id_visita": id_visita, "descricao": "Triagem", "hora": util.get_data_hora()}
+    banco.insere_procedimento(proc)
 
 
 

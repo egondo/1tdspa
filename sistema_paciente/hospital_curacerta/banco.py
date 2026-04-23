@@ -3,11 +3,31 @@ import oracledb
 def get_conexao():
     return oracledb.connect(user="pf0313", password="professor#23", dsn="oracle.fiap.com.br/orcl")
 
+def rec_id_visita_senha(senha: int) -> dict:
+    sql = "SELECT id_visita FROM t_ps_visita WHERE senha = :senha AND saida IS NULL ORDER BY chegada DESC"
+    with get_conexao() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql, {"senha": senha})
+            reg = cur.fetchone()
+            if reg:
+                return reg[0]
+            else:
+                raise Exception(f"Nenhuma visita encontrada com senha {senha}")
+
+
+def altera_visita(visita: dict):
+    sql = "UPDATE T_PS_VISITA SET batimentos=:batimentos, temperatura=:temperatura, pressao=:pressao, alergia=:alergia, sintomas=:sintomas, observacao=:obs WHERE id_visita=:id_visita"
+    with get_conexao() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql, visita)
+        conn.commit()
+
+
+
 def rec_id_paciente_senha(senha: int) -> int:
     sql = "SELECT id_paciente FROM T_PS_VISITA WHERE senha = :senha ORDER BY id_visita DESC"
     with get_conexao() as conn:
         with conn.cursor() as cur:
-
             cur.execute(sql, {"senha": senha})
             reg = cur.fetchone()
             if reg == None:
@@ -21,6 +41,12 @@ def altera_paciente(paciente: dict):
             cur.execute(sql, paciente)
         conn.commit()
     
+def insere_procedimento(proc: dict):
+    sql = "INSERT INTO t_ps_procedimento(id_visita, descricao, hora, id_funcionario) values(:id_visita, :descricao, to_date(:hora, 'DD-MM-YYYY HH24:MI'), :id_funcionario)"    
+    with get_conexao() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql, proc)
+        conn.commit()
 
 
 
