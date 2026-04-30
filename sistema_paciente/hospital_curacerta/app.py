@@ -15,4 +15,8 @@ def gera_senha(cpf: str):
     info = {"numero": senha, "cpf": cpf}
     return (info, 200)
 
+
+#endpoint que simula o atendimento/guiche
+
+#endpoint que simula a gravação de informações da triagem
 app.run(debug=True)
