@@ -1,11 +1,13 @@
 import banco
 import util
 
+#Atendimento/Guiche
 def atualizacao_paciente(senha: int, paciente: dict):
     id_pac = banco.rec_id_paciente_senha(senha)
     paciente['id_paciente'] = id_pac
     banco.altera_paciente(paciente)
 
+#Triagem
 def cadastra_triagem(triagem: dict):
     #recuperar a visita através da senha do paciente
     #atualiza a visita com as informações da triagem
@@ -19,7 +21,7 @@ def cadastra_triagem(triagem: dict):
     banco.insere_procedimento(proc)
 
 
-
+#gerando a senha do paciente
 def gerando_senha(cpf: str) -> int:
     paciente = banco.rec_paciente_cpf(cpf)
 
