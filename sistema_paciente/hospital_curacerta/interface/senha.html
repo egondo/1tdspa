@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Hospital Cura Certa - Senhas</h2>
+    <p>CPF: <input type="text" id="cpf" name="cpf" size="15"/>
+        <br/><input type="button" id="gera" value="gera" />
+    </p>
+
+    <!-- Adicionei uma div para mostrar o resultado na tela -->
+    <div id="resultado" style="margin-top: 15px; font-weight: bold;"></div>
+
+    <script>
+        // Mapeia os elementos do HTML
+        const botaoGera = document.getElementById('gera')
+        const inputCpf = document.getElementById('cpf')
+        const divResultado = document.getElementById('resultado')
+
+        // Adiciona o evento de clique ao botão
+        botaoGera.addEventListener('click', async () => {
+            const cpfDigitado = inputCpf.value.trim()
+
+            // Validação simples para ver se o campo não está vazio
+            if (!cpfDigitado) {
+                alert("Por favor, digite um CPF.")
+                return
+            }
+
+            // Mostra uma mensagem de carregamento
+            divResultado.textContent = "Gerando senha, aguarde..."
+
+            try {
+                const url = `http://127.0.0.1:5000/hospital/senha/${cpfDigitado}`
+                const resposta = await fetch(url)
+                if (!resposta.ok) {
+                    throw new Error(`Erro na API: status ${resposta.status}`)
+                }
+                const dados = await resposta.json()
+
+                console.log("Resposta da API:", dados)
+                divResultado.textContent = `Sucesso! Senha gerada: ${dados.numero}`
+
+            } catch (erro) {
+                console.error("Falha ao acessar a API:", erro)
+                divResultado.textContent = "Erro ao gerar a senha. Tente novamente."
+            }
+        })
+    </script>
+</body>
+</html>
