@@ -17,6 +17,15 @@ def gera_senha(cpf: str):
 
 
 #endpoint que simula o atendimento/guiche
+@app.route("/hospital/paciente/<int:senha>", methods=['PUT'])
+@cross_origin()
+def modifica_paciente(senha: int):
+    pac = request.json
+    negocio.atualizacao_paciente(senha, pac)
+    info = {'title': 'Paciente alterado com sucesso', 'status': 200}
+    return info
+
+
 
 #endpoint que simula a gravação de informações da triagem
 app.run(debug=True)
