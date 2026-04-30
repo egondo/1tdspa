@@ -1,0 +1,1 @@
+alter table T_PS_VISITA add senha number;
