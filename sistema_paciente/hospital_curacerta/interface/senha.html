@@ -34,7 +34,8 @@
             divResultado.textContent = "Gerando senha, aguarde..."
 
             try {
-                const url = `http://127.0.0.1:5000/hospital/senha/${cpfDigitado}`
+                //const url = `http://127.0.0.1:5000/hospital/senha/${cpfDigitado}`
+                const url = `http://onetdspa.onrender.com/hospital/senha/${cpfDigitado}`
                 const resposta = await fetch(url)
                 if (!resposta.ok) {
                     throw new Error(`Erro na API: status ${resposta.status}`)
