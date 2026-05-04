@@ -1,5 +1,5 @@
 #API do Hospital Cura Certa
-#Funciona como um adaptador entre a interface e a camada de ngócio da aplicação (adapter)
+#Funciona como um adaptador entre a interface e a camada de negócio da aplicação (adapter)
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
