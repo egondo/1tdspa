@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Hospital Cura Certa - Triagem</h2>
+    <p>Senha: <input type="text" id="senha" size="5"/></p>
+    <p>Batimentos: <input type="number" id="batimentos" size="5"/></p>
+    <p>Temperatura: <input type="text" id="temperatura" size="5"/></p>
+    <p>Pressao: <input type="text" id="pressao" size="10"/></p>
+    <p>Sintomas: <input type="text" id="sintomas" /></p>
+    <p>Alergias: <input type="text" id="alergia" /></p>
+    <p>Observação: <input type="text" id="observacao" /></p>
+
+    <input type="hidden" id="idFuncionario" value="1" />
+    
+    <p><input type="button" id="triagem" value="cadastra" />
+    </p>
+
+    <!-- Adicionei uma div para mostrar o resultado na tela -->
+    <div id="resultado" style="margin-top: 15px; font-weight: bold;"></div>
+
+    <script>
+        // Mapeia os elementos do HTML
+        const botaoCadastra = document.getElementById('triagem')
+        const inputSenha = document.getElementById('senha')
+        const inputBatimentos = document.getElementById('batimentos')
+        const inputTemperatura = document.getElementById('temperatura')
+        const inputPressao = document.getElementById('pressao')
+        const inputAlergia = document.getElementById('alergia')
+        const inputSintomas = document.getElementById('sintomas')
+        const inputObservacao = document.getElementById('observacao')
+        const inputIdFuncionario = document.getElementById('idFuncionario')
+
+        const divResultado = document.getElementById('resultado')
+
+        // Adiciona o evento de clique ao botão
+        botaoCadastra.addEventListener('click', async () => {
+            //Mostra uma mensagem de carregamento
+            divResultado.textContent = "Aguarde..."
+
+            triagem = {
+                "senha": inputSenha.value,
+                "id_funcionario": inputIdFuncionario.value,
+                "batimentos": inputBatimentos.value,
+                "sintomas": inputSintomas.value,
+                "obs": inputObservacao.value,
+                "alergia": inputAlergia.value,
+                "temperatura": inputTemperatura.value,
+                "pressao": inputPressao.value
+            }
+            try {
+                const url = `http://127.0.0.1:5000/hospital/triagem`
+                const resposta = await fetch(url, {
+                    method: 'POST', //Define o método como POST
+                    headers: {
+                        'Content-Type': 'application/json' //enviando um JSON
+                    },
+                    body: JSON.stringify(triagem) //Transforma o objeto JS em uma string JSON 
+                })
+
+                if (!resposta.ok) {
+                    throw new Error(`Erro na API: status ${resposta.status}`)
+                }
+                const dados = await resposta.json()
+
+                console.log("Resposta da API:", dados)
+                divResultado.textContent = `Sucesso! Senha gerada: ${dados.numero}`
+
+            } catch (erro) {
+                console.error("Falha ao acessar a API:", erro)
+                divResultado.textContent = "Erro ao gerar a senha. Tente novamente."
+            }
+        })
+    </script>
+</body>
+</html>

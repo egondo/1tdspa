@@ -28,4 +28,14 @@ def modifica_paciente(senha: int):
 
 
 #endpoint que simula a gravação de informações da triagem
+@app.route("/hospital/triagem", methods=["POST"])
+@cross_origin()
+def realiza_triagem():
+    triagem = request.json
+    negocio.cadastra_triagem(triagem)
+    info = {'title': 'Triagem cadastrada com sucesso', 'status': 201}
+    return info
+
+
+
 app.run(debug=True)
