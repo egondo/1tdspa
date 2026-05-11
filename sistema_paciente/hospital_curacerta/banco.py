@@ -48,7 +48,18 @@ def insere_procedimento(proc: dict):
             cur.execute(sql, proc)
         conn.commit()
 
-
+#recupera paciente pelo id
+def rec_paciente_id(id: int) -> dict:
+    sql = "SELECT id_paciente, nome, telefone, convenio, to_char(nascimento, 'DD-MM-YYYY'), cpf FROM t_ps_paciente WHERE id_paciente = :id"
+    with get_conexao() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql, {"id": id})
+            registro = cur.fetchone()
+            if registro == None:
+                return None
+            else:
+                pac = {"id_paciente": registro[0], "nome": registro[1], "telefone": registro[2], "convenio": registro[3], "nascimento": registro[4], "cpf": registro[5]}
+            return pac
 
 
 #recupera paciente pelo cpf
@@ -74,7 +85,7 @@ def rec_senha() -> int:
             return resultado[0]
 
 def insere_paciente(paciente: dict):
-    sql = "INSERT INTO t_ps_paciente(nome, telefone, convenio, cpf, nascimento) VALUES(:nome, :telefone, :convenio, :cpf, to_date(:nascimento, 'DD-MM-YYYY')) RETURNING ID_PACIENTE INTO :id_paciente"
+    sql = "INSERT INTO t_ps_paciente(nome, telefone, convenio, cpf, nascimento VALUES(:nome, :telefone, :convenio, :cpf, to_date(:nascimento, 'DD-MM-YYYY')) RETURNING ID_PACIENTE INTO :id_paciente"
     with get_conexao() as conn:
         with conn.cursor() as cur:
             new_id = cur.var(oracledb.NUMBER) #criando obj para armazenar o id

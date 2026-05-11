@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Hospital Cura Certa - Atendimento</h2>
+    <p>SENHA: <input type="text" id="senha" name="senha" size="15"/>
+        <br/><input type="button" id="ok" value="ok" />
+    </p>
+
+    <form>
+        <p>Nome: <input type="text" id="nome" /></p>
+        <p>CPF: <input type="text" id="cpf" /></p>
+        <p>Convenio: <input type="text" id="convenio" /></p>
+        <p>Telefone: <input type="text" id="telefone" /></p>
+        <p>Nascimento: <input type="text" id="nascimento" /></p>
+        <p>ID: <input type="text" id="id_paciente" /></p>
+        <p><input type="button" id="altera" value="altera" /></p>
+    </form>
+
+    <!-- Adicionei uma div para mostrar o resultado na tela -->
+    <div id="resultado" style="margin-top: 15px; font-weight: bold;"></div>
+
+    <script>
+        // Mapeia os elementos do HTML
+        const botaoOk = document.getElementById('ok')
+        const inputSenha = document.getElementById('senha')
+        const divResultado = document.getElementById('resultado')
+
+        // Adiciona o evento de clique ao botão
+        botaoOk.addEventListener('click', async () => {
+            const senhaDigitada = inputSenha.value.trim()
+            // Mostra uma mensagem de carregamento
+            divResultado.textContent = "Buscando paciente, aguarde..."
+
+            try {
+                const url = `http://127.0.0.1:5000/hospital/paciente/${senhaDigitada}`
+                //const url = `http://onetdspa.onrender.com/hospital/senha/${cpfDigitado}`
+                const resposta = await fetch(url)
+                alert(resposta.status)
+                if (!resposta.ok) {
+                    throw new Error(`Erro na API: status ${resposta.status}`)
+                }
+                const paciente = await resposta.json()
+
+                document.getElementById("nome").value = paciente.nome
+                document.getElementById("cpf").value = paciente.cpf
+                document.getElementById("convenio").value = paciente.convenio
+                document.getElementById("telefone").value = paciente.telefone
+                document.getElementById("nascimento").value = paciente.nascimento
+                document.getElementById("id_paciente").value = paciente.id_paciente
+
+                console.log("Resposta da API:", paciente)
+                divResultado.textContent = `Sucesso! Paciente recuperado com sucesso`
+
+            } catch (erro) {
+                console.error("Falha ao acessar a API:", erro)
+                divResultado.textContent = "Erro ao consultar paciente. Tente novamente."
+            }
+        })
+
+        //botao altera
+        const botaoAltera = document.getElementById("altera")
+        botaoAltera.addEventListener('click', async () => {
+            const senhaDigitada = inputSenha.value.trim()
+
+            try {
+                const url = `http://127.0.0.1:5000/hospital/paciente/${senhaDigitada}`
+                //const url = `http://onetdspa.onrender.com/hospital/senha/${cpfDigitado}`
+
+                const nome = document.getElementById("nome").value
+                const cpf = document.getElementById("cpf").value
+                const convenio = document.getElementById("convenio").value
+                const telefone = document.getElementById("telefone").value
+                const nascimento = document.getElementById("nascimento").value
+                id_paciente = document.getElementById("id_paciente").value
+
+                paciente = {
+                    "nome": nome, "cpf": cpf, "convenio": convenio,
+                    "telefone": telefone, "nascimento": nascimento,
+                    "id_paciente": id_paciente
+                }
+
+                console.log(paciente)
+                console.log(url)
+                const resposta = await fetch(url, {
+                    method: 'PUT',                    
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(paciente)
+                })
+                
+                console.log(resposta.status)
+                alert(resposta.status)
+
+                if (!resposta.ok) {
+                    throw new Error(`Erro na API: status ${resposta.status}`)
+                }
+
+
+                console.log("Resposta da API:", resposta)
+                divResultado.textContent = `Sucesso! Paciente alterado com sucesso`
+
+            } catch (erro) {
+                console.error("Falha ao acessar a API de alteracao:", erro)
+                divResultado.textContent = "Erro ao alterar paciente."
+            }
+        })
+    </script>
+</body>
+</html>

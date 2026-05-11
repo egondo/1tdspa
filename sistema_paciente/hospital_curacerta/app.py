@@ -25,6 +25,11 @@ def modifica_paciente(senha: int):
     info = {'title': 'Paciente alterado com sucesso', 'status': 200}
     return info
 
+@app.route("/hospital/paciente/<int:senha>", methods=["GET"])
+@cross_origin()
+def recupera_paciente(senha: int):
+    pac = negocio.recupera_paciente(senha)
+    return (pac, 200)
 
 
 #endpoint que simula a gravação de informações da triagem

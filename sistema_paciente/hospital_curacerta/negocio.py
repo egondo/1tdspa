@@ -7,6 +7,11 @@ def atualizacao_paciente(senha: int, paciente: dict):
     paciente['id_paciente'] = id_pac
     banco.altera_paciente(paciente)
 
+def recupera_paciente(senha: int) -> dict:
+    id_pac = banco.rec_id_paciente_senha(senha)
+    pac = banco.rec_paciente_id(id_pac)
+    return pac
+
 #Triagem
 def cadastra_triagem(triagem: dict):
     #recuperar a visita através da senha do paciente
