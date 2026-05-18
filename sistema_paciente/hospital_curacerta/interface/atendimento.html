@@ -93,14 +93,12 @@
                     },
                     body: JSON.stringify(paciente)
                 })
-                
                 console.log(resposta.status)
                 alert(resposta.status)
 
                 if (!resposta.ok) {
                     throw new Error(`Erro na API: status ${resposta.status}`)
                 }
-
 
                 console.log("Resposta da API:", resposta)
                 divResultado.textContent = `Sucesso! Paciente alterado com sucesso`
